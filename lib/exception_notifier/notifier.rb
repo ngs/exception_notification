@@ -157,6 +157,7 @@ class ExceptionNotifier
     end
 
     def compose_email
+      return unless @options[:exception_recipients].any?
       set_data_variables
       subject = compose_subject
       name = @env.nil? ? 'background_exception_notification' : 'exception_notification'

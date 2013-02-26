@@ -32,6 +32,7 @@ class ExceptionNotifier
     Notifier.default_email_headers        = @options[:email_headers]
 
     @campfire = CampfireNotifier.new @options[:campfire]
+    @asana    = AsanaNotifier.new @options[:asana]
 
     @options[:ignore_exceptions] ||= self.class.default_ignore_exceptions
     @options[:ignore_crawlers]   ||= self.class.default_ignore_crawlers
@@ -49,6 +50,7 @@ class ExceptionNotifier
            conditionally_ignored(options[:ignore_if], env, exception)
       Notifier.exception_notification(env, exception).deliver
       @campfire.exception_notification(exception)
+      @asana.exception_notification(exception)
       env['exception_notifier.delivered'] = true
     end
 

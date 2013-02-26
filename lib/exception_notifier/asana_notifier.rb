@@ -7,15 +7,17 @@ class ExceptionNotifier
 
     class << self
       attr_writer :default_name_prefix
+
       def default_name_prefix
         @default_name_prefix || "[ERROR] "
       end
-    end
 
-    def default_options
-      {
-        :name_prefix => default_name_prefix
-      }
+      def default_options
+        {
+          :name_prefix => default_name_prefix
+        }
+      end
+
     end
 
     def initialize(options)
@@ -38,8 +40,8 @@ class ExceptionNotifier
     def exception_notification(exception)
       if active?
         @workspace.create_task({
-          :name => "#{@options[:name_prefix]} #{exception.message}",
-          :note => exception.backtrace.first
+          :name  => "#{@options[:name_prefix]} #{exception.message}",
+          :notes => exception.backtrace.join("\n")
         })
       end
     end
