@@ -52,4 +52,4 @@ class ExceptionNotifier
   end
 end
 
-ExceptionNotifier::AsanaNotifier.asaan_available = Gem.loaded_specs.keys.include? 'asana'
+ExceptionNotifier::AsanaNotifier.asana_available = Gem.loaded_specs.keys.include? 'asana'
