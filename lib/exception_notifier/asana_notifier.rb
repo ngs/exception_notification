@@ -5,6 +5,19 @@ class ExceptionNotifier
     attr_accessor :workspace_id
     attr_accessor :api_key
 
+    class << self
+      attr_writer :default_name_prefix
+      def default_name_prefix
+        @default_name_prefix || "[ERROR] "
+      end
+    end
+
+    def default_options
+      {
+        :name_prefix => default_name_prefix
+      }
+    end
+
     def initialize(options)
       begin
         return unless asana_available
@@ -16,6 +29,7 @@ class ExceptionNotifier
           client.api_key = api_key
         end
         @workspace = Asana::Workspace.find(workspace_id)
+        @options   = options.reverse_merge(self.class.default_options)
       rescue
         @workspace = nil
       end
@@ -24,7 +38,7 @@ class ExceptionNotifier
     def exception_notification(exception)
       if active?
         @workspace.create_task({
-          :name => "[Exception] #{exception.message}",
+          :name => "#{@options[:name_prefix]} #{exception.message}",
           :note => exception.backtrace.first
         })
       end
