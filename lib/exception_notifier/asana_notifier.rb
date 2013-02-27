@@ -42,7 +42,7 @@ class ExceptionNotifier
         @workspace.create_task({
           :name  => "#{@options[:name_prefix]} #{exception.message}",
           :notes => exception.backtrace.join("\n")
-        })
+        }.reverse_merge(@options))
       end
     end
 
